@@ -146,7 +146,7 @@ module.exports.send = (req, res, options) => {
   log.message = getMessage(req, res);
 
   logger.log(log);
-  console.log(log)
+//   console.log(log)
 }
 
 function getMessage(req, res) {
