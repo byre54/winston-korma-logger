@@ -1,0 +1,18 @@
+{
+  "name": "winston-korma-logger",
+  "version": "0.1.0",
+  "description": "Extended Winston Logger for Custom Need",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://repo.bkpm.go.id/oss.reza_aqrobby/winston-korma-logger"
+  },
+  "keywords": [
+    "logger"
+  ],
+  "author": "raqrobby@gmail.com",
+  "license": "ISC"
+}
