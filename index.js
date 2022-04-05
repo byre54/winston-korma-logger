@@ -5,7 +5,8 @@ const { combine, timestamp, json } = format;
 const { UDPTransport } = require("udp-transport-winston");
 const serverName = require('os').hostname()
 var PROJECT_ROOT = path.join(__dirname, '..', '..');
-const serviceName = PROJECT_ROOT.split('/').slice(-1).shift()
+const package = require('../../package');
+const serviceName = package.name
 const levels = {
   EMERGENCY: 0,
   ALERT: 1,
