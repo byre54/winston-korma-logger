@@ -146,7 +146,10 @@ module.exports.send = (req, res, options) => {
   log.message = getMessage(req, res);
 
   logger.log(log);
-//   console.log(log)
+//   console.log(lo
+g)
+
+
 }
 
 function getMessage(req, res) {
@@ -154,8 +157,8 @@ function getMessage(req, res) {
   if (res) {
     messages.add(res.statusMessage);
   }
-  if (req.loggerData) {
-    typeof req.loggerData.error === 'undefined' ? messages.add(req.loggerData.message) :messages.add(req.loggerData.error.message) 
+  if (typeof req.loggerData != 'undefined') {
+    typeof req.loggerData.error === 'undefined' ? messages.add(req.loggerData.message) : messages.add(req.loggerData.error.message) 
   }
   return Array.from(messages).join(" | ");
 }
