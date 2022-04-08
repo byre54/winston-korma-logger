@@ -4,8 +4,9 @@ const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, json } = format;
 const { UDPTransport } = require("udp-transport-winston");
 const serverName = require('os').hostname()
-const serviceName = process.cwd().split('/').splice(-1).shift()
 var PROJECT_ROOT = path.join(__dirname, '..', '..');
+const package = require('../../package');
+const serviceName = package.name
 const levels = {
   EMERGENCY: 0,
   ALERT: 1,
@@ -62,22 +63,23 @@ module.exports.send = (req, res, options) => {
                       ? "DEBUG"
                       : "DEFAULT";
   }
+  let severity = level === 'NOTICE' || level === 'WARNING' ? 3 : level === 'ERROR' ? 2: level === 'INFO' ? 4 : 1
   const startTime = new Date(options.receivedTime).getTime()
   const endTime = new Date().getTime()
   const headerHostname = req.headers.host
-  const serviceURI = req._parsedUrl.pathname
   const processTime =  endTime - startTime
   const serviceQuery= req._parsedUrl.query
   const originURI = req.originalUrl
-  const servicePoint = originURI.split('/').slice(1).shift()
+  const serviceURI = originURI.split('/').slice(1).shift()
+  const servicePoint = originURI.split('/').length > 2 ? originURI.split('/')[2] : ''
   const log = {
     level: level,
-    severity: level,
+    severity: severity,
     serviceName: `${serviceName}-service-${options.logEnvironment}`,
     serviceURI:serviceURI,
     originURI: originURI,
     servicePoint : servicePoint,
-    serviceEndpoint : servicePoint+serviceURI,
+    serviceEndpoint : `${serviceURI}/${servicePoint}`,
     serviceQuery:serviceQuery,
     serviceHostname:headerHostname,
     logName: `${serviceName}/logs/${options.logEnvironment}`,
@@ -85,7 +87,7 @@ module.exports.send = (req, res, options) => {
       type: "ocp_instance",
       labels: {
         project_id: serviceName+"-project",
-        instance_id: serviceName+"-instance",
+        instance_id: serviceName+"-instance-"+options.logEnvironment,
         zone: serverName,
       },
     },
@@ -146,19 +148,15 @@ module.exports.send = (req, res, options) => {
   log.message = getMessage(req, res);
 
   logger.log(log);
-//   console.log(lo
-g)
-
-
-}
 
 function getMessage(req, res) {
   let messages = new Set();
   if (res) {
     messages.add(res.statusMessage);
   }
-  if (typeof req.loggerData != 'undefined') {
-    typeof req.loggerData.error === 'undefined' ? messages.add(req.loggerData.message) : messages.add(req.loggerData.error.message) 
+
+  if (typeof req.loggerData !== 'undefined') {
+    typeof req.loggerData.error === 'undefined' ? messages.add(req.loggerData.message) :messages.add(req.loggerData.error.message) 
   }
   return Array.from(messages).join(" | ");
 }
