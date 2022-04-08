@@ -148,6 +148,7 @@ module.exports.send = (req, res, options) => {
   log.message = getMessage(req, res);
 
   logger.log(log);
+}
 
 function getMessage(req, res) {
   let messages = new Set();
