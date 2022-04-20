@@ -1,0 +1,22 @@
+{
+  "name": "winston-korma-logger",
+  "version": "0.1.0",
+  "description": "Extended Winston Logger for Custom Need",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://repo.bkpm.go.id/oss.resa/winston-korma-logger.git"
+  },
+  "keywords": [
+    "logger"
+  ],
+  "author": "raqrobby@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "udp-transport-winston": "^1.2.10",
+    "winston": "^3.7.2"
+  }
+}
