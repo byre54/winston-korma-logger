@@ -117,6 +117,7 @@ module.exports.send = (req, res, options) => {
         log.jsonPayload = req.body;
       } else if (typeof req.body === "string") {
         log.textPayload = req.body;
+        log.jsonPayload = JSON.parse(req.body);
       }
     }
     if (req.query && req.query.visitor_id) {
@@ -146,8 +147,7 @@ module.exports.send = (req, res, options) => {
   }
 
   log.message = getMessage(req, res);
-
-  logger.log(log);
+  options.logEnvironment === 'development' ? console.log(log) : logger.log(log)
 }
 
 function getMessage(req, res) {
