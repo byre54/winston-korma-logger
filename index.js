@@ -70,6 +70,7 @@ module.exports.send = (req, res, options) => {
   const processTime =  endTime - startTime
   const serviceQuery= req._parsedUrl.query
   const originURI = req.originalUrl
+  const logDBQuery = req.logDBQuery 
   const serviceURI = originURI.split('/').slice(1).shift()
   const servicePoint = originURI.split('/').length > 2 ? originURI.split('/')[2] : ''
   const log = {
@@ -83,6 +84,7 @@ module.exports.send = (req, res, options) => {
     serviceQuery:serviceQuery,
     serviceHostname:headerHostname,
     logName: `${serviceName}/logs/${options.logEnvironment}`,
+    logDBQuery: `${logDBQuery}`,
     resource: {
       type: "ocp_instance",
       labels: {
